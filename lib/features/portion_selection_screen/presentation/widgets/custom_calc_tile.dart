@@ -8,11 +8,13 @@ class CustomCalcTile extends StatelessWidget {
   final void Function()? onTap;
   final bool isSelected;
   final String image;
+  final double? width;
   const CustomCalcTile({super.key,
   required this.title,
   required this.onTap,
   required this.isSelected,
-  required this.image
+  required this.image,
+  this.width,
   });
 
   @override
@@ -22,6 +24,7 @@ class CustomCalcTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+     width:width?? 160.w,
         padding: EdgeInsets.all(24.r),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.r),

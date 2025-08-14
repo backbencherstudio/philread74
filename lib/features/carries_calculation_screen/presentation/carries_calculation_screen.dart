@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:philread74/core/constant/icons.dart';
 import 'package:philread74/core/constant/padding.dart';
+import 'package:philread74/core/routes/route_name.dart';
 import 'package:philread74/core/theme/theme_extension/app_colors.dart';
 import 'package:philread74/core/utils/common_widget/background_screen.dart/background_screen.dart';
+import 'package:philread74/features/login_screen/presentation/widgets/customButtons.dart';
 import 'package:philread74/features/portion_selection_screen/Riverpod/portionProvider.dart';
 import 'package:philread74/features/portion_selection_screen/presentation/widgets/custom_calc_tile.dart';
 
-class CostCalculationScreen extends StatelessWidget {
-  const CostCalculationScreen({super.key});
+class CarriesCalculationScreen extends StatelessWidget {
+  const CarriesCalculationScreen({super.key});
 
- @override
+  @override
   Widget build(BuildContext context) {
     final portionMap = {
       9: {"title": "1/4", "icon": AppIcons.onethird},
@@ -48,19 +51,9 @@ class CostCalculationScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 33.h),
-SizedBox(height: 33.h,),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Cost of Service & Containers",
-                    style: style.headlineSmall!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 21.h,),
+
+                SizedBox(height: 36.h),
+
                 CustomCalcTile(
                   title: portionData["title"] as String,
                   image: portionData["icon"] as String,
@@ -82,8 +75,13 @@ SizedBox(height: 33.h,),
                     ),
                   ),
                 ),
-Spacer(),
-SizedBox()
+
+                SizedBox(height: 40.h),
+
+                Spacer(),
+                Custombuttons(title: "Go to cost", onTap: () {
+                  context.push(RouteName.costCalculationScreen);
+                }),
               ],
             );
           },

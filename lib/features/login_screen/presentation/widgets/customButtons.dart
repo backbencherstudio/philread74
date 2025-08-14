@@ -24,7 +24,7 @@ class Custombuttons extends StatelessWidget {
           borderRadius: BorderRadius.circular(6.r),
           color: AppColors.primary
         ),
-        child: Center(child: Text("Next",
+        child: Center(child: Text(title,
         style: style.bodyMedium,
         )),
       ),

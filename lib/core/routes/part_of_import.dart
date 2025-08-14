@@ -5,6 +5,8 @@ import 'package:philread74/core/routes/build_page_with_transition.dart';
 import 'package:philread74/core/routes/route_name.dart';
 import 'package:philread74/core/services/navigation_service/navigation_service.dart';
 import 'package:philread74/features/carriage_selection_screen/presentation/carriage_selection_screen.dart';
+import 'package:philread74/features/carries_calculation_screen/presentation/carries_calculation_screen.dart';
+import 'package:philread74/features/cost_calculation_screen/presentation/cost_calculation_screen.dart';
 import 'package:philread74/features/login_screen/presentation/login_screen.dart';
 import 'package:philread74/features/portion_selection_screen/presentation/portion_selection_screen.dart';
 

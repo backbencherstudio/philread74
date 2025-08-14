@@ -2,7 +2,7 @@ part of 'part_of_import.dart';
 
 class RouteConfig {
   GoRouter goRouter = GoRouter(
-    initialLocation: RouteName.carriageSelectionScreen,
+    initialLocation: RouteName.loginScreen,
     navigatorKey: NavigationService.instance.navigatorKey,
 
     routes: [
@@ -39,20 +39,20 @@ class RouteConfig {
           return const MaterialPage(child: PortionSelectionScreen());
         },
       ),
-    //   GoRoute(
-    //     name: RouteName.signInScreen,
-    //     path: RouteName.signInScreen,
-    //     pageBuilder: (context, state) {
-    //       return const MaterialPage(child: SignInScreen());
-    //     },
-    //   ),
-    //   GoRoute(
-    //     name: RouteName.acountCreatedScreen,
-    //     path: RouteName.acountCreatedScreen,
-    //     pageBuilder: (context, state) {
-    //       return const MaterialPage(child: AcountCreatedScreen());
-    //     },
-    //   ),
+      GoRoute(
+        name: RouteName.carriesCalculationScreen,
+        path: RouteName.carriesCalculationScreen,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: CarriesCalculationScreen());
+        },
+      ),
+      GoRoute(
+        name: RouteName.costCalculationScreen,
+        path: RouteName.costCalculationScreen,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: CostCalculationScreen());
+        },
+      ),
     //   GoRoute(
     //     name: RouteName.forgetPasScreen,
     //     path: RouteName.forgetPasScreen,
