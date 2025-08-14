@@ -6,6 +6,6 @@ final isSelected = StateProvider<bool>((ref){
 
 
 
-final selectedIndex = StateProvider<int>((ref){
+final selectedIndexProvider = StateProvider<int>((ref){
   return 0;
 });
