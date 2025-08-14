@@ -9,3 +9,9 @@ final isSelected = StateProvider<bool>((ref){
 final selectedIndex = StateProvider<int>((ref){
   return 0;
 });
+
+
+
+final valueProvider = StateProvider<int?>((ref){
+  return null;
+});

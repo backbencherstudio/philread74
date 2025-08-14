@@ -32,13 +32,13 @@ class RouteConfig {
           );
         },
       ),
-    //   GoRoute(
-    //     name: RouteName.paymentIntro,
-    //     path: RouteName.paymentIntro,
-    //     pageBuilder: (context, state) {
-    //       return const MaterialPage(child: PaymentIntroScreen());
-    //     },
-    //   ),
+      GoRoute(
+        name: RouteName.portionSelectionScreen,
+        path: RouteName.portionSelectionScreen,
+        pageBuilder: (context, state) {
+          return const MaterialPage(child: PortionSelectionScreen());
+        },
+      ),
     //   GoRoute(
     //     name: RouteName.signInScreen,
     //     path: RouteName.signInScreen,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:philread74/core/constant/padding.dart';
+import 'package:philread74/core/routes/route_name.dart';
 import 'package:philread74/core/theme/theme_extension/app_colors.dart';
 import 'package:philread74/core/utils/common_widget/background_screen.dart/background_screen.dart';
 import 'package:philread74/features/carriage_selection_screen/Riverpod/selectionProvider.dart';
@@ -50,31 +52,31 @@ class CarriageSelectionScreen extends StatelessWidget {
                 final isSelected = ref.watch(selectedIndexProvider);
                 return SizedBox(
                   height: 260.h,
-                  child: Expanded(
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 1.3,
-                      ),
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Customtiles(title: carriage[index],
-                        onTap: () {
-                          ref.watch(selectedIndexProvider.notifier).state =index;
-                        }, isSelected: isSelected == index,
-                        );
-                      },
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 16,
+                      crossAxisSpacing: 16,
+                      childAspectRatio: 1.3,
                     ),
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: 4,
+                    itemBuilder: (context, index) {
+                      return Customtiles(title: carriage[index],
+                      onTap: () {
+                        ref.watch(selectedIndexProvider.notifier).state =index;
+                      }, isSelected: isSelected == index,
+                      );
+                    },
                   ),
                 );
               }
             ),
             Spacer(),
-            Custombuttons(title: "Next", onTap: () {}),
+            Custombuttons(title: "Next", onTap: () {
+              context.push(RouteName.portionSelectionScreen);
+            }),
           ],
         ),
       ),
