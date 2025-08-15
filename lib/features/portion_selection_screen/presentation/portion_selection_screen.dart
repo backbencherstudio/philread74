@@ -102,13 +102,13 @@ class PortionSelectionScreen extends StatelessWidget {
                   title: "Next",
                   onTap: () {
                     if (selectedIndex == 0) {
-                      ref.read(valueProvider.notifier).state = 9;
+                      ref.read(valueProvider.notifier).state = 9.00;
                     } else if (selectedIndex == 1) {
-                      ref.read(valueProvider.notifier).state = 18;
+                      ref.read(valueProvider.notifier).state = 18.00;
                     } else if (selectedIndex == 2) {
-                      ref.read(valueProvider.notifier).state = 27;
+                      ref.read(valueProvider.notifier).state = 27.00;
                     } else if (selectedIndex == 3) {
-                      ref.read(valueProvider.notifier).state = 36;
+                      ref.read(valueProvider.notifier).state = 36.00;
                     }
                     final updatedValue = ref.read(
                       valueProvider,

@@ -1,17 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final isSelected = StateProvider<bool>((ref){
-  return false;
-});
-
-
-
-final selectedIndex = StateProvider<int>((ref){
-  return 0;
-});
-
-
-
-final valueProvider = StateProvider<int?>((ref){
+final valueProvider = StateProvider<double?>((ref){
   return null;
 });
