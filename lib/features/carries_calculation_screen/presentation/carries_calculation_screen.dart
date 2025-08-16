@@ -104,87 +104,113 @@ class CarriesCalculationScreen extends ConsumerWidget {
                     .state = 28.46;
               }
             });
-            return Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: SvgPicture.asset(
-                        AppIcons.backButton,
-                        height: 28.h,
-                        width: 28.w,
-                      ),
-                    ),
-                  ),
 
-                  SizedBox(height: 36.h),
+            final totalCheck = ref.watch(totalCost);
 
-                  CustomCalcTile(
-                    title: portionData["title"] as String,
-                    image: portionData["icon"] as String,
-                    isSelected: true,
-                    width: double.infinity,
-                    onTap: () {
-                      debugPrint("Selected: ${portionData["title"]}");
-                    },
-                  ),
-                  SizedBox(height: 32.h),
-
-                  Align(
+            return Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Number of carriers:",
-                      style: style.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primary,
-                      ),
+                    child: SvgPicture.asset(
+                      AppIcons.backButton,
+                      height: 28.h,
+                      width: 28.w,
                     ),
                   ),
+                ),
 
-                  Row(
-                    children: [
-                      CustomContainer(size: 2, text: "Big Cages",),
-                      CustomCountContainer(controller: bigCageCost, id: 1)
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      CustomContainer(size: 2, text: "Small Cages",),
-                      // CustomCountContainer(controller: smallCageCost, id: 2)
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      CustomContainer(size: 2, text: "Dollies",),
-                      // CustomCountContainer(controller: dollyCost, id: 3)
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      CustomContainer(size: 2, text: "Pallets",),
-                      // CustomCountContainer(controller: palletCost, id: 4)
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      CustomContainer(size: 2, text: "Totes",),
-                      // CustomCountContainer(controller: totalCost, id: 5)
-                    ],
-                  ),
+                SizedBox(height: 36.h),
 
-                  SizedBox(height: 40.h),
+                CustomCalcTile(
+                  title: portionData["title"] as String,
+                  image: portionData["icon"] as String,
+                  isSelected: true,
+                  width: double.infinity,
+                  onTap: () {
+                    debugPrint("Selected: ${portionData["title"]}");
+                  },
+                ),
+                SizedBox(height: 32.h),
 
-                  Spacer(),
-                  Custombuttons(title: "Go to cost", onTap: () {
-                    context.push(RouteName.costCalculationScreen);
-                  }),
-                ],
-              ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Number of carriers:",
+                    style: style.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 20.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Big Cages",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: bigCageCost, id: 1)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Small Cages",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: smallCageCost, id: 2)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Dollies",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: dollyCost, id: 3)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Pallets",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: palletCost, id: 4)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Totes",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: totalCost, id: 5)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Total",),
+                    SizedBox(width: 16.w,),
+                    Container(
+                      width: 105.w,
+                      height: 36.h,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.r),
+                        border: Border.all(width: 1.w, color: AppColors.onPrimary),
+                        color: AppColors.onError,
+                      ),
+                      child: Text("${ref.read(totalCost.notifier).state.toStringAsFixed(2)} m²", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
+                    )
+                  ],
+                ),
+                Spacer(),
+                Custombuttons(title: "Go to cost", onTap: () {
+                  context.push(RouteName.costCalculationScreen);
+                }),
+                SizedBox(height: 60.h,)
+              ],
             );
           },
         ),

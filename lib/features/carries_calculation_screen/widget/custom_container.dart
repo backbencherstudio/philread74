@@ -6,7 +6,7 @@ class CustomContainer extends StatelessWidget {
   final bool? isCentered;
   final int size;
   final String? text;
-  final double? price;
+  final String? price;
   final bool? both;
   const CustomContainer({
     super.key,
@@ -19,9 +19,11 @@ class CustomContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = Theme.of(context).textTheme;
     return Container(
-      width: (size == 1) ? 344.w : (size == 2) ? 216.w : 112.w,
-      height: 36.h,
+      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      width: (size == 1) ? 344.w : (size == 2) ? 216.w : 105.w,
+      height: (size != 1) ? 36.h : null,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(6.r),
         border: Border.all(width: 1.w, color: AppColors.onPrimary),
@@ -29,12 +31,15 @@ class CustomContainer extends StatelessWidget {
       ),
       alignment: (isCentered == true) ? Alignment.center : Alignment.centerLeft,
       child: (both == true) ? Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(text ?? "", style: TextStyle(color: Color(0xFF4A4C56)),),
-          Text("£${price ?? 0.0}"),
+          SizedBox(
+            width: 260.w,
+              child: Text(text ?? "", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400))
+          ),
+          Text("£$price" ?? "£0.0", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400)),
         ],
-      ) : (text != null) ? Text(text ?? "") : Text("£${price ?? 0.0}"),
+      ) : (text != null) ? Text(text ?? "", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400)) : Text("£$price", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400)),
     );
   }
 }
