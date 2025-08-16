@@ -8,5 +8,6 @@ class AppIcons {
   static const String halfIcon = 'assets/half.svg';
   static const String onethird = 'assets/oneThird.svg';
   static const String quarz = 'assets/quartz.svg';
-  
+  static const String plus = 'assets/plus.svg';
+  static const String minus = 'assets/minus.svg';
 }

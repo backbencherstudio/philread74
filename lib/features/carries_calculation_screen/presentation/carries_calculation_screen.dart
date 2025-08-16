@@ -8,15 +8,18 @@ import 'package:philread74/core/constant/padding.dart';
 import 'package:philread74/core/routes/route_name.dart';
 import 'package:philread74/core/theme/theme_extension/app_colors.dart';
 import 'package:philread74/core/utils/common_widget/background_screen.dart/background_screen.dart';
+import 'package:philread74/features/carries_calculation_screen/Riverpod/type_carry_cost.dart';
+import 'package:philread74/features/carries_calculation_screen/widget/custom_container.dart';
+import 'package:philread74/features/carries_calculation_screen/widget/custom_count_container.dart';
 import 'package:philread74/features/login_screen/presentation/widgets/customButtons.dart';
 import 'package:philread74/features/portion_selection_screen/Riverpod/portionProvider.dart';
 import 'package:philread74/features/portion_selection_screen/presentation/widgets/custom_calc_tile.dart';
 
-class CarriesCalculationScreen extends StatelessWidget {
+class CarriesCalculationScreen extends ConsumerWidget {
   const CarriesCalculationScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final portionMap = {
       9: {"title": "1/4", "icon": AppIcons.onethird},
       18: {"title": "1/2", "icon": AppIcons.halfIcon},
@@ -25,18 +28,87 @@ class CarriesCalculationScreen extends StatelessWidget {
     };
 
     final style = Theme.of(context).textTheme;
-
+    final data = ref.watch(valueProvider);
+    final portionData =
+        portionMap[data] ?? {"title": "-", "icon": AppIcons.fullIcon};
     return BackgroundScreen(
       child: Padding(
         padding: AppPadding.screenHorizontal,
         child: Consumer(
-          builder: (contex, ref, _) {
-            final data = ref.watch(valueProvider);
-            final portionData =
-                portionMap[data] ?? {"title": "-", "icon": AppIcons.fullIcon};
+          builder: (_, ref, _) {
+
+            Future.microtask((){
+              if (data == 9.00) {
+                ref
+                    .read(bigCageCost.notifier)
+                    .state = 25.04;
+                ref
+                    .read(smallCageCost.notifier)
+                    .state = 16.17;
+                ref
+                    .read(dollyCost.notifier)
+                    .state = 6.26;
+                ref
+                    .read(totesCost.notifier)
+                    .state = 1.25;
+                ref
+                    .read(palletCost.notifier)
+                    .state = 31.31;
+              } else if (data == 18.00) {
+                ref
+                    .read(bigCageCost.notifier)
+                    .state = 24.36;
+                ref
+                    .read(smallCageCost.notifier)
+                    .state = 15.73;
+                ref
+                    .read(dollyCost.notifier)
+                    .state = 6.09;
+                ref
+                    .read(totesCost.notifier)
+                    .state = 1.22;
+                ref
+                    .read(palletCost.notifier)
+                    .state = 30.45;
+              } else if (data == 27.00) {
+                ref
+                    .read(bigCageCost.notifier)
+                    .state = 23.68;
+                ref
+                    .read(smallCageCost.notifier)
+                    .state = 15.29;
+                ref
+                    .read(dollyCost.notifier)
+                    .state = 5.92;
+                ref
+                    .read(totesCost.notifier)
+                    .state = 1.18;
+                ref
+                    .read(palletCost.notifier)
+                    .state = 29.60;
+              } else {
+                ref
+                    .read(bigCageCost.notifier)
+                    .state = 22.77;
+                ref
+                    .read(smallCageCost.notifier)
+                    .state = 14.70;
+                ref
+                    .read(dollyCost.notifier)
+                    .state = 5.69;
+                ref
+                    .read(totesCost.notifier)
+                    .state = 1.14;
+                ref
+                    .read(palletCost.notifier)
+                    .state = 28.46;
+              }
+            });
+
+            final totalCheck = ref.watch(totalCost);
 
             return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                   onTap: () {
@@ -75,13 +147,69 @@ class CarriesCalculationScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-
-                SizedBox(height: 40.h),
-
+                SizedBox(height: 20.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Big Cages",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: bigCageCost, id: 1)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Small Cages",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: smallCageCost, id: 2)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Dollies",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: dollyCost, id: 3)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Pallets",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: palletCost, id: 4)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Totes",),
+                    SizedBox(width: 16.w,),
+                    CustomCountContainer(controller: totalCost, id: 5)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Total",),
+                    SizedBox(width: 16.w,),
+                    Container(
+                      width: 105.w,
+                      height: 36.h,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.r),
+                        border: Border.all(width: 1.w, color: AppColors.onPrimary),
+                        color: AppColors.onError,
+                      ),
+                      child: Text("${ref.read(totalCost.notifier).state.toStringAsFixed(2)} m²", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
+                    )
+                  ],
+                ),
                 Spacer(),
                 Custombuttons(title: "Go to cost", onTap: () {
                   context.push(RouteName.costCalculationScreen);
                 }),
+                SizedBox(height: 60.h,)
               ],
             );
           },

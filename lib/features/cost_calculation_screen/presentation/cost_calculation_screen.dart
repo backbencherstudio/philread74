@@ -6,19 +6,36 @@ import 'package:philread74/core/constant/icons.dart';
 import 'package:philread74/core/constant/padding.dart';
 import 'package:philread74/core/theme/theme_extension/app_colors.dart';
 import 'package:philread74/core/utils/common_widget/background_screen.dart/background_screen.dart';
+import 'package:philread74/features/carries_calculation_screen/Riverpod/type_carry_cost.dart';
+import 'package:philread74/features/carries_calculation_screen/widget/custom_container.dart';
 import 'package:philread74/features/portion_selection_screen/Riverpod/portionProvider.dart';
 import 'package:philread74/features/portion_selection_screen/presentation/widgets/custom_calc_tile.dart';
 
-class CostCalculationScreen extends StatelessWidget {
+import '../Riverpod/provider.dart';
+
+class CostCalculationScreen extends StatefulWidget {
   const CostCalculationScreen({super.key});
 
+  @override
+  State<CostCalculationScreen> createState() => _CostCalculationScreenState();
+}
+
+class _CostCalculationScreenState extends State<CostCalculationScreen> {
+  final discountController = TextEditingController(text: "0.0");
+
+  @override
+  void dispose() {
+    discountController.dispose();
+    // TODO: implement dispose
+    super.dispose();
+  }
  @override
   Widget build(BuildContext context) {
     final portionMap = {
-      9: {"title": "1/4", "icon": AppIcons.onethird},
-      18: {"title": "1/2", "icon": AppIcons.halfIcon},
-      27: {"title": "3/4", "icon": AppIcons.quarz},
-      36: {"title": "Full", "icon": AppIcons.fullIcon},
+      9: {"title": "¼", "icon": AppIcons.onethird, "percentage": 10},
+      18: {"title": "½", "icon": AppIcons.halfIcon, "percentage": 7},
+      27: {"title": "¾", "icon": AppIcons.quarz, "percentage": 4},
+      36: {"title": "Full", "icon": AppIcons.fullIcon, "percentage": 0},
     };
 
     final style = Theme.of(context).textTheme;
@@ -27,10 +44,18 @@ class CostCalculationScreen extends StatelessWidget {
       child: Padding(
         padding: AppPadding.screenHorizontal,
         child: Consumer(
-          builder: (contex, ref, _) {
+          builder: (_, ref, _) {
             final data = ref.watch(valueProvider);
             final portionData =
-                portionMap[data] ?? {"title": "-", "icon": AppIcons.fullIcon};
+                portionMap[data] ?? {"title": "-", "icon": AppIcons.fullIcon, "percentage": 10};
+            final bigCageFinalCost = (ref.read(bigCageCost.notifier).state * ref.read(countController(1).notifier).state).toStringAsFixed(2);
+            final smallCageFinalCost = (ref.read(smallCageCost.notifier).state * ref.read(countController(2).notifier).state).toStringAsFixed(2);
+            final dollyFinalCost = (ref.read(dollyCost.notifier).state * ref.read(countController(3).notifier).state).toStringAsFixed(2);
+            final palletFinalCost = (ref.read(palletCost.notifier).state * ref.read(countController(4).notifier).state).toStringAsFixed(2);
+            final totesFinalCost = (ref.read(totesCost.notifier).state * ref.read(countController(5).notifier).state).toStringAsFixed(2);
+
+            final netCost = ref.watch(totalCost);
+            final disCost = ref.watch(discountProvider);
 
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -48,8 +73,7 @@ class CostCalculationScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 33.h),
-SizedBox(height: 33.h,),
+                Spacer(),
                 Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -82,8 +106,92 @@ SizedBox(height: 33.h,),
                     ),
                   ),
                 ),
-Spacer(),
-SizedBox()
+                SizedBox(height: 20.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Big Cages",),
+                    SizedBox(width: 16.w,),
+                    CustomContainer(size: 3, text: "£$bigCageFinalCost", isCentered: true,)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Small Cages",),
+                    SizedBox(width: 16.w,),
+                    CustomContainer(size: 3, text: "£$smallCageFinalCost", isCentered: true,)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Dollies",),
+                    SizedBox(width: 16.w,),
+                    CustomContainer(size: 3, text: "£$dollyFinalCost", isCentered: true,)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Pallets",),
+                    SizedBox(width: 16.w,),
+                    CustomContainer(size: 3, text: "£$palletFinalCost", isCentered: true,)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                Row(
+                  children: [
+                    CustomContainer(size: 2, text: "Totes",),
+                    SizedBox(width: 16.w,),
+                    CustomContainer(size: 3, text: "£$totesFinalCost", isCentered: true,)
+                  ],
+                ),
+                SizedBox(height: 16.h,),
+                CustomContainer(size: 1, text: "A ${portionData["percentage"]}% extra charge applies for the ${portionData["title"]} portion compared to the full price.", price: netCost.toStringAsFixed(2), both: true,),
+                SizedBox(height: 16.h,),
+                TextFormField(
+                  controller: discountController,
+                  keyboardType: TextInputType.number,
+                  style: style.bodyMedium!.copyWith(color: AppColors.secondary, fontWeight: FontWeight.w300, fontSize: 12.sp),
+                  decoration: InputDecoration(
+                    prefix: Text(
+                      '£ ',
+                      style: style.bodyMedium!.copyWith(color: AppColors.secondary, fontWeight: FontWeight.w300, fontSize: 12.sp),),
+                    isDense: true,
+                    contentPadding: EdgeInsets.all(10.r),
+                    filled: true,
+                    fillColor: AppColors.onSurface,
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                      borderSide: BorderSide(width: 1.w, color: AppColors.onPrimary),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(6.r),
+                      borderSide: BorderSide(width: 1.w, color: AppColors.onPrimary),
+                    ),
+                  ),
+                  onChanged: (val) {
+                    double parsed = double.tryParse(val) ?? 0.0;
+                    if(parsed > netCost) {
+                      discountController.text = "0.0";
+                    } else {
+                      ///discountController.text = parsed.toString();
+                      ref.read(discountProvider.notifier).state = parsed;
+                    }
+                  },
+                ),
+                SizedBox(height: 3.h,),
+                Container(
+                  width: double.maxFinite,
+                  height: 36.h,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6.r),
+                    border: Border.all(width: 1.w, color: AppColors.onPrimary),
+                    color: AppColors.onSurface,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text("£ ${(netCost-disCost).toStringAsFixed(2)}", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
+                )
               ],
             );
           },
