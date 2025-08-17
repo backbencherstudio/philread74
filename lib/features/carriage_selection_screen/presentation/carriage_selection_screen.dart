@@ -36,7 +36,7 @@ class CarriageSelectionScreen extends StatelessWidget {
               child: Text(
                 "Select Train Carriage:",
                 style: style.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   color: AppColors.primary,
                 ),
               ),
@@ -44,9 +44,6 @@ class CarriageSelectionScreen extends StatelessWidget {
 
             SizedBox(height: 40.h),
 
-            //grid tile
-
-            // Customtiles(title: 'Carriage A',),
             Consumer(
               builder: (context, ref, _) {
                 final isSelected = ref.watch(selectedIndexProvider);
@@ -77,6 +74,7 @@ class CarriageSelectionScreen extends StatelessWidget {
             Custombuttons(title: "Next", onTap: () {
               context.push(RouteName.portionSelectionScreen);
             }),
+            SizedBox(height: 65.h,)
           ],
         ),
       ),
