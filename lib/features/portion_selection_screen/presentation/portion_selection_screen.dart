@@ -52,7 +52,7 @@ class PortionSelectionScreen extends StatelessWidget {
               child: Text(
                 "Select Portion of the Carriage",
                 style: style.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                   color: AppColors.primary,
                 ),
               ),
@@ -120,6 +120,7 @@ class PortionSelectionScreen extends StatelessWidget {
                 );
               },
             ),
+            SizedBox(height: 68.h,)
           ],
         ),
       ),

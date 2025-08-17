@@ -1,17 +1,19 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:philread74/core/constant/icons.dart';
+import 'package:philread74/features/carries_calculation_screen/Riverpod/carriesCalculation_provider.dart';
 import 'package:philread74/features/carries_calculation_screen/Riverpod/type_carry_cost.dart';
+import 'package:philread74/features/portion_selection_screen/Riverpod/portionProvider.dart';
 import '../../../core/theme/theme_extension/app_colors.dart';
 
 class CustomCountContainer extends ConsumerStatefulWidget {
-  final StateProvider controller;
   final int id;
   const CustomCountContainer({
     super.key,
-    required this.controller,
     required this.id,
   });
 
@@ -50,11 +52,10 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
     final style = Theme.of(context).textTheme;
     final count = ref.watch(countController(widget.id));
     final countNotifier = ref.read(countController(widget.id).notifier);
-    final isFreeze = ref.watch(readOnly(widget.controller));
+    final itemSizes = ref.watch(itemSizesProvider);
+    final isFreeze = ref.watch(readOnly(itemSizes[widget.id] ?? 0.0));
 
-    if (_textController.text != count.toString()) {
-      _textController.text = count.toString();
-    }
+    final restSpace = ref.watch(valueProvider)! - ref.watch(totalSpace);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -72,13 +73,16 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
             onTap: () {
               if (count > 0) countNotifier.state = count - 1;
             },
-            child: SvgPicture.asset(AppIcons.minus, width: 11.25.w,),
+            child: SizedBox(
+                width: 14.w,
+                child: SvgPicture.asset(AppIcons.minus, colorFilter: ColorFilter.mode((isFreeze) ? AppColors.freezeColor : AppColors.containerTextColor, BlendMode.srcIn),)),
           ),
 
           Expanded(
             child: SizedBox(
               width: 30.w,
               child: TextFormField(
+
                 readOnly: isFreeze,
                 controller: _textController,
                 textAlign: TextAlign.center,
@@ -90,11 +94,17 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,
                 ),
-                style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),
+                style: style.bodyMedium!.copyWith(color: (isFreeze) ? AppColors.freezeColor : AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),
                 onChanged: (val) {
-                  final parsed = int.tryParse(val);
-                  if (parsed != null && parsed >= 0) {
+                  final parsed = int.tryParse(_textController.text) ?? 0;
+                  if ((itemSizes[widget.id] ?? 0.0) * int.parse(val) <= restSpace) {
                     countNotifier.state = parsed;
+                    debugPrint(val);
+                  }
+                  else {
+                    debugPrint("NOT OK");
+                    _textController.text = "0";
+                    countNotifier.state = 0;
                   }
                 },
               ),
@@ -106,7 +116,10 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
             onTap: () {
               if(!isFreeze) countNotifier.state = count + 1;
             },
-            child: SvgPicture.asset(AppIcons.plus, width: 11.25.w,),
+            child: SizedBox(
+              width: 14.w,
+                child: SvgPicture.asset(AppIcons.plus, colorFilter: ColorFilter.mode((isFreeze) ? AppColors.freezeColor : AppColors.containerTextColor, BlendMode.srcIn),)
+            ),
           ),
         ],
       ),

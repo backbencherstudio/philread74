@@ -18,99 +18,102 @@ class LoginScreen extends StatelessWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     return BackgroundScreen(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: Container(
-              width: 336.w,
-              padding: EdgeInsets.all(24.r),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-                color: AppColors.onSurface,
-              ),
-              child: Column(
-                children: [
-                  SvgPicture.asset(AppIcons.logo),
-                  SizedBox(height: 36.h),
-                  Text(
-                    "Log in Data",
-                    style: style.headlineSmall!.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.primary,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Text(
-                    "Enter your email and password ",
-                    style: style.bodySmall!.copyWith(
-                      fontWeight: FontWeight.w300,
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  SizedBox(height: 36.h),
-
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Pay NO",
-                      style: style.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w400,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 100.h),
+            Center(
+              child: Container(
+                width: 336.w,
+                padding: EdgeInsets.all(24.r),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.r),
+                  color: AppColors.onSurface,
+                ),
+                child: Column(
+                  children: [
+                    SvgPicture.asset(AppIcons.logo),
+                    SizedBox(height: 36.h),
+                    Text(
+                      "Log in Data",
+                      style: style.headlineSmall!.copyWith(
+                        fontWeight: FontWeight.w500,
                         color: AppColors.primary,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: nameController,
-                    style: style.labelMedium!.copyWith(
-                      color: AppColors.borderColor,
-                    ),
-                  ),
-
-                  SizedBox(height: 16.h),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Password ",
-                      style: style.bodyMedium!.copyWith(
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.primary,
+                    SizedBox(height: 12.h),
+                    Text(
+                      "Enter your email and password ",
+                      style: style.bodySmall!.copyWith(
+                        fontWeight: FontWeight.w300,
+                        color: AppColors.secondary,
                       ),
                     ),
-                  ),
-                  SizedBox(height: 8.h),
-                  TextFormField(
-                    controller: passwordController,
-                    style: style.labelMedium!.copyWith(
-                      color: AppColors.borderColor,
+                    SizedBox(height: 36.h),
+        
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Pay NO",
+                        style: style.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primary,
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 32.h),
-
-                  Custombuttons(
-                    title: "Login",
-                    onTap: () {
-                      if (passwordController.text.trim() == "Baby123" &&
-                          nameController.text.trim() == "VROOI") {
-                        context.go(RouteName.carriageSelectionScreen);
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: "Credentials not matched",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          backgroundColor: Colors.red,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
-                        );
-                      }
-                    },
-                  ),
-                ],
+                    SizedBox(height: 8.h),
+                    TextFormField(
+                      controller: nameController,
+                      style: style.labelMedium!.copyWith(
+                        color: AppColors.borderColor,
+                      ),
+                    ),
+        
+                    SizedBox(height: 16.h),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Password ",
+                        style: style.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    TextFormField(
+                      controller: passwordController,
+                      style: style.labelMedium!.copyWith(
+                        color: AppColors.borderColor,
+                      ),
+                    ),
+                    SizedBox(height: 32.h),
+        
+                    Custombuttons(
+                      title: "Login",
+                      onTap: () {
+                        if (passwordController.text.trim() == "Baby123" &&
+                            nameController.text.trim() == "VROOI") {
+                          context.go(RouteName.carriageSelectionScreen);
+                        } else {
+                          Fluttertoast.showToast(
+                            msg: "Credentials not matched",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            backgroundColor: Colors.red,
+                            textColor: Colors.white,
+                            fontSize: 16.0,
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

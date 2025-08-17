@@ -26,4 +26,5 @@ class AppColors {
   static const Color secondaryTextColor = Color(0xff777980);
   static const Color deActiveTextColor = Color(0xff777980);
   static const Color containerTextColor = Color(0xff1D1F2C);
+  static const Color freezeColor = Color(0xFFA5A5AB);
 }
