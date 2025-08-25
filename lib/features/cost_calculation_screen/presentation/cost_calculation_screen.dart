@@ -53,7 +53,7 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
               final smallCageFinalCost = (ref.read(smallCageCost.notifier).state * ref.read(countController(2).notifier).state).toStringAsFixed(2);
               final dollyFinalCost = (ref.read(dollyCost.notifier).state * ref.read(countController(3).notifier).state).toStringAsFixed(2);
               final palletFinalCost = (ref.read(palletCost.notifier).state * ref.read(countController(4).notifier).state).toStringAsFixed(2);
-              final totesFinalCost = (ref.read(totesCost.notifier).state * ref.read(countController(5).notifier).state).toStringAsFixed(2);
+              final totesFinalCost = (ref.read(totesCost.notifier).state * ref.read(countController(3).notifier).state * 5).toStringAsFixed(2);
         
               final netCost = ref.watch(totalCost);
               final disCost = ref.watch(discountProvider);
@@ -133,6 +133,14 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                   ),
                   SizedBox(height: 16.h,),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("  (Totes)", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400),),
+                      CustomContainer(size: 3, text: "£$totesFinalCost", isCentered: true,)
+                    ],
+                  ),
+                  SizedBox(height: 16.h,),
+                  Row(
                     children: [
                       CustomContainer(size: 2, text: "Pallets",),
                       SizedBox(width: 16.w,),
@@ -140,15 +148,20 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                     ],
                   ),
                   SizedBox(height: 16.h,),
-                  Row(
-                    children: [
-                      CustomContainer(size: 2, text: "Totes",),
-                      SizedBox(width: 16.w,),
-                      CustomContainer(size: 3, text: "£$totesFinalCost", isCentered: true,)
-                    ],
-                  ),
+                  CustomContainer(size: 1, text: "A ${portionData["percentage"]}% extra charge applies for the ${portionData["title"]} portion compared to the full price."),
                   SizedBox(height: 16.h,),
-                  CustomContainer(size: 1, text: "A ${portionData["percentage"]}% extra charge applies for the ${portionData["title"]} portion compared to the full price.", price: netCost.toStringAsFixed(2), both: true,),
+                  //CustomContainer(size: 1, price: netCost.toStringAsFixed(2)),
+                  Container(
+                    width: double.maxFinite,
+                    height: 36.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6.r),
+                      border: Border.all(width: 1.w, color: AppColors.onPrimary),
+                      color: AppColors.onSurface,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text("£ ${(netCost * (1 + (portionData["percentage"] as int) / 100)).toStringAsFixed(2)}", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
+                  ),
                   SizedBox(height: 16.h,),
                   TextFormField(
                     controller: discountController,
@@ -175,26 +188,9 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                     ),
                     onChanged: (val) {
                       double parsed = double.tryParse(val) ?? 0.0;
-                      if(parsed > netCost) {
-                        discountController.text = "";
-                      } else {
-                        ///discountController.text = parsed.toString();
-                        ref.read(discountProvider.notifier).state = parsed;
-                      }
+                      ref.read(discountProvider.notifier).state = parsed;
                     },
                   ),
-                  SizedBox(height: 3.h,),
-                  Container(
-                    width: double.maxFinite,
-                    height: 36.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6.r),
-                      border: Border.all(width: 1.w, color: AppColors.onPrimary),
-                      color: AppColors.onSurface,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text("£ ${(netCost-disCost).toStringAsFixed(2)}", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
-                  )
                 ],
               );
             },

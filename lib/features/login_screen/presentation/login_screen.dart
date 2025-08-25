@@ -36,7 +36,7 @@ class LoginScreen extends StatelessWidget {
                     SvgPicture.asset(AppIcons.logo),
                     SizedBox(height: 36.h),
                     Text(
-                      "Log in Data",
+                      "Login Data",
                       style: style.headlineSmall!.copyWith(
                         fontWeight: FontWeight.w500,
                         color: AppColors.primary,
@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Pay NO",
+                        "NTO Pay Number",
                         style: style.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w400,
                           color: AppColors.primary,
@@ -94,7 +94,7 @@ class LoginScreen extends StatelessWidget {
                       title: "Login",
                       onTap: () {
                         if (passwordController.text.trim() == "Baby123" &&
-                            nameController.text.trim() == "VROOI") {
+                            nameController.text.trim() == "VR001") {
                           context.go(RouteName.carriageSelectionScreen);
                         } else {
                           Fluttertoast.showToast(

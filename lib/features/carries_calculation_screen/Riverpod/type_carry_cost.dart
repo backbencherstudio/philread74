@@ -19,7 +19,7 @@ final totalCost = StateProvider<double>((ref) {
   final smallCount = ref.watch(countController(2));
   final dollyCount = ref.watch(countController(3));
   final palletCount = ref.watch(countController(4));
-  final totesCount = ref.watch(countController(5));
+  final totesCount = dollyCount * 5;
 
   return big * bigCount + small * smallCount + dolly * dollyCount + pallet * palletCount + totes * totesCount;
 });
@@ -31,4 +31,17 @@ final readOnly = StateProvider.family<bool, double>((ref, size) {
   final totalCap = ref.watch(totalSpace);
   final restCap = (maxCap - totalCap);
   return size > restCap;
+});
+
+final readOnlyFor2 = StateProvider<bool>((ref) {
+  final maxCap = ref.watch(valueProvider) ?? 9.00;
+  final totalCap = ref.watch(totalSpace);
+  final restCap = (maxCap - totalCap);
+  final itemSize = ref.watch(itemSizesProvider);
+  final dollyCount = ref.watch(countController(3));
+
+  final dollySpace = (itemSize[3] ?? 0.0) * ((dollyCount == 0) ? 1 : dollyCount);
+  final totesSpace = (itemSize[5] ?? 0.0) * ((dollyCount == 0) ? 1 : dollyCount) * 5;
+
+  return dollySpace + totesSpace > restCap;
 });

@@ -53,7 +53,7 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
     final count = ref.watch(countController(widget.id));
     final countNotifier = ref.read(countController(widget.id).notifier);
     final itemSizes = ref.watch(itemSizesProvider);
-    final isFreeze = ref.watch(readOnly(itemSizes[widget.id] ?? 0.0));
+    final isFreeze = (widget.id == 3) ? ref.watch(readOnlyFor2) : ref.watch(readOnly(itemSizes[widget.id] ?? 0.0));
 
     final restSpace = ref.watch(valueProvider)! - ref.watch(totalSpace);
 
@@ -97,14 +97,28 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
                 style: style.bodyMedium!.copyWith(color: (isFreeze) ? AppColors.freezeColor : AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),
                 onChanged: (val) {
                   final parsed = int.tryParse(_textController.text) ?? 0;
-                  if ((itemSizes[widget.id] ?? 0.0) * int.parse(val) <= restSpace) {
-                    countNotifier.state = parsed;
-                    debugPrint(val);
-                  }
-                  else {
-                    debugPrint("NOT OK");
-                    _textController.text = "0";
-                    countNotifier.state = 0;
+                  if (widget.id == 3) {
+                    // check dolly + totes space
+                    final dollySpace = (itemSizes[3] ?? 0.0) * parsed;
+                    final totesSpace = (itemSizes[5] ?? 0.0) * (parsed * 5);
+                    if (dollySpace + totesSpace <= restSpace) {
+                      countNotifier.state = parsed;
+                    } else {
+                      debugPrint("NOT OK");
+                      _textController.text = "0";
+                      countNotifier.state = 0;
+                    }
+                  } else {
+                    // check normal carriers
+                    final space = (itemSizes[widget.id] ?? 0.0) * parsed;
+                    if (space <= restSpace) {
+                      countNotifier.state = parsed;
+                      debugPrint(val);
+                    } else {
+                      debugPrint("NOT OK");
+                      _textController.text = "0";
+                      countNotifier.state = 0;
+                    }
                   }
                 },
               ),

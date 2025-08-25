@@ -18,7 +18,7 @@ final totalSpace = StateProvider<double>((ref){
   final smallCount = ref.watch(countController(2));
   final dollyCount = ref.watch(countController(3));
   final palletCount = ref.watch(countController(4));
-  final totesCount = ref.watch(countController(5));
+  final totesCount = dollyCount * 5;
 
   return 0.96*bigCount + 0.62*smallCount + 0.24*dollyCount + 1.2*palletCount + 3.02*totesCount;
 });

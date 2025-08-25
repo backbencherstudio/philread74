@@ -8,13 +8,15 @@ class CustomContainer extends StatelessWidget {
   final String? text;
   final String? price;
   final bool? both;
+  final bool? isBold;
   const CustomContainer({
     super.key,
     required this.size,
     this.isCentered,
     this.price,
     this.text,
-    this.both
+    this.both,
+    this.isBold
   });
 
   @override
@@ -37,7 +39,7 @@ class CustomContainer extends StatelessWidget {
             width: 260.w,
               child: Text(text ?? "", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400))
           ),
-          Text("£$price" ?? "£0.0", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400)),
+          Text("£$price", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400)),
         ],
       ) : (text != null) ? Text(text ?? "", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400)) : Text("£$price", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400)),
     );
