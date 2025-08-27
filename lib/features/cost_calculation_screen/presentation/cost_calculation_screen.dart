@@ -11,6 +11,7 @@ import 'package:philread74/features/carries_calculation_screen/widget/custom_con
 import 'package:philread74/features/portion_selection_screen/Riverpod/portionProvider.dart';
 import 'package:philread74/features/portion_selection_screen/presentation/widgets/custom_calc_tile.dart';
 
+import '../../carries_calculation_screen/Riverpod/carriesCalculation_provider.dart';
 import '../Riverpod/provider.dart';
 
 class CostCalculationScreen extends StatefulWidget {
@@ -26,7 +27,6 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
   @override
   void dispose() {
     discountController.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
  @override
@@ -49,11 +49,10 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
               final data = ref.watch(valueProvider);
               final portionData =
                   portionMap[data] ?? {"title": "-", "icon": AppIcons.fullIcon, "percentage": 10};
-              final bigCageFinalCost = (ref.read(bigCageCost.notifier).state * ref.read(countController(1).notifier).state).toStringAsFixed(2);
-              final smallCageFinalCost = (ref.read(smallCageCost.notifier).state * ref.read(countController(2).notifier).state).toStringAsFixed(2);
-              final dollyFinalCost = (ref.read(dollyCost.notifier).state * ref.read(countController(3).notifier).state).toStringAsFixed(2);
-              final palletFinalCost = (ref.read(palletCost.notifier).state * ref.read(countController(4).notifier).state).toStringAsFixed(2);
-              final totesFinalCost = (ref.read(totesCost.notifier).state * ref.read(countController(3).notifier).state * 5).toStringAsFixed(2);
+              final bigCageFinalCost = ref.watch(itemPerCost(1)).toStringAsFixed(2);
+              final smallCageFinalCost = ref.watch(itemPerCost(2)).toStringAsFixed(2);
+              final dollyFinalCost = ref.watch(itemPerCost(3)).toStringAsFixed(2);
+              final palletFinalCost = ref.watch(itemPerCost(4)).toStringAsFixed(2);
         
               final netCost = ref.watch(totalCost);
               final disCost = ref.watch(discountProvider);
@@ -136,7 +135,7 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("  (Totes)", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400),),
-                      CustomContainer(size: 3, text: "£$totesFinalCost", isCentered: true,)
+                      CustomContainer(size: 3, text: "£${(ref.read(itemPerCost(3).notifier).state / 5).toStringAsFixed(2)}", isCentered: true,)
                     ],
                   ),
                   SizedBox(height: 16.h,),

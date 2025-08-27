@@ -44,7 +44,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 12.h),
                     Text(
-                      "Enter your email and password ",
+                      "Enter your pay number and password ",
                       style: style.bodySmall!.copyWith(
                         fontWeight: FontWeight.w300,
                         color: AppColors.secondary,
@@ -55,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "NTO Pay Number",
+                        "Pay Number",
                         style: style.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w400,
                           color: AppColors.primary,
