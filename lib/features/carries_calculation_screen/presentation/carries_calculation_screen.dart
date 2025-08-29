@@ -13,6 +13,7 @@
   import 'package:philread74/features/carries_calculation_screen/widget/custom_container.dart';
   import 'package:philread74/features/carries_calculation_screen/widget/custom_count_container.dart';
   import 'package:philread74/features/carries_calculation_screen/widget/predefined_count_container.dart';
+import 'package:philread74/features/cost_calculation_screen/Riverpod/provider.dart';
   import 'package:philread74/features/login_screen/presentation/widgets/customButtons.dart';
   import 'package:philread74/features/portion_selection_screen/Riverpod/portionProvider.dart';
   import 'package:philread74/features/portion_selection_screen/presentation/widgets/custom_calc_tile.dart';
@@ -115,6 +116,7 @@
                   children: [
                     GestureDetector(
                       onTap: () {
+                        ref.invalidate(countController);
                         Navigator.pop(context);
                       },
                       child: Align(

@@ -17,8 +17,7 @@ final itemSizesProvider = StateProvider<Map<int, double>>((ref) {
     1: 0.96,  // bigCageSize
     2: 0.62,  // smallCageSize
     3: 0.24,  // dollySize
-    5: 1.2,   // totesSize
-    4: 3.02,  // palletSize
+    4: 1.2,  // palletSize
   };
 });
 
@@ -29,5 +28,5 @@ final totalSpace = StateProvider<double>((ref){
   final dollyCount = ref.watch(countController(3));
   final palletCount = ref.watch(countController(4));
 
-  return 0.96*bigCount + 0.62*smallCount + 0.24*dollyCount + 3.02*palletCount;
+  return 0.96*bigCount + 0.62*smallCount + 0.24*dollyCount + 1.2*palletCount;
 });

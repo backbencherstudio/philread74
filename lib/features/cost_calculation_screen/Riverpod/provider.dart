@@ -17,15 +17,22 @@ final totalCost = StateProvider<double>((ref) {
   final data = ref.watch(valueProvider);
   final portionData = portionMap[data] ?? {"portion" : 0.25, "percentage": 0.10};
 
-  return inputCost * (portionData["portion"] ?? 0.25) * (1 + (portionData["percentage"] ?? 0.10));
+  return (inputCost * (portionData["portion"] ?? 0.25)) * (1 + (portionData["percentage"] ?? 0.10));
 });
 
 final itemPerCost = StateProvider.family<double, int> ((ref, id){
   final total = ref.watch(totalCost);
-  final data = ref.watch(valueProvider);
-  final itemSize = ref.read(itemSizesProvider);
+
+  final takenSpace = ref.watch(totalSpace);
+
+  final itemSize = ref.watch(itemSizesProvider);
   final itemSizeValue = itemSize[id] ?? 0.96;
 
-  if(id == 4) return total / data;
-  return (total * itemSizeValue) / data;
+  final itemCount = ref.watch(countController(id));
+
+  if(takenSpace == 0 || itemCount == 0) {
+    return 0.0;
+  } else {
+    return ((total * itemSizeValue) / takenSpace);
+  }
 });

@@ -14,14 +14,14 @@ import 'package:philread74/features/portion_selection_screen/presentation/widget
 import '../../carries_calculation_screen/Riverpod/carriesCalculation_provider.dart';
 import '../Riverpod/provider.dart';
 
-class CostCalculationScreen extends StatefulWidget {
+class CostCalculationScreen extends ConsumerStatefulWidget {
   const CostCalculationScreen({super.key});
 
   @override
-  State<CostCalculationScreen> createState() => _CostCalculationScreenState();
+  ConsumerState<CostCalculationScreen> createState() => _CostCalculationScreenState();
 }
 
-class _CostCalculationScreenState extends State<CostCalculationScreen> {
+class _CostCalculationScreenState extends ConsumerState<CostCalculationScreen> {
   final discountController = TextEditingController();
 
   @override
@@ -62,6 +62,11 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      ref.read(itemPerCost(1).notifier).state = 0.0;
+                      ref.read(itemPerCost(2).notifier).state = 0.0;
+                      ref.read(itemPerCost(3).notifier).state = 0.0;
+                      ref.read(itemPerCost(4).notifier).state = 0.0;
+                      ref.read(totalCost.notifier).state = 0.0;
                       Navigator.pop(context);
                     },
                     child: Align(
@@ -159,7 +164,7 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                       color: AppColors.onSurface,
                     ),
                     alignment: Alignment.center,
-                    child: Text("£ ${(netCost * (1 + (portionData["percentage"] as int) / 100)).toStringAsFixed(2)}", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
+                    child: Text("£ ${(netCost).toStringAsFixed(2)}", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
                   ),
                   SizedBox(height: 16.h,),
                   TextFormField(
