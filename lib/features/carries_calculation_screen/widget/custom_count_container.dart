@@ -55,7 +55,7 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
     final itemSizes = ref.watch(itemSizesProvider);
     final isFreeze = ref.watch(readOnly(itemSizes[widget.id] ?? 0.0));
 
-    final restSpace = ref.watch(valueProvider)! - ref.watch(totalSpace);
+    final restSpace = ref.watch(valueProvider) - ref.watch(totalSpace);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w),
@@ -97,15 +97,15 @@ class _CustomCountContainerState extends ConsumerState<CustomCountContainer> {
                 style: style.bodyMedium!.copyWith(color: (isFreeze) ? AppColors.freezeColor : AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),
                 onChanged: (val) {
                   final parsed = int.tryParse(_textController.text) ?? 0;
-                  if ((itemSizes[widget.id] ?? 0.0) * int.parse(val) <= restSpace) {
-                    countNotifier.state = parsed;
-                    debugPrint(val);
-                  }
-                  else {
-                    debugPrint("NOT OK");
-                    _textController.text = "0";
-                    countNotifier.state = 0;
-                  }
+                    final space = (itemSizes[widget.id] ?? 0.0) * parsed;
+                    if (space <= restSpace) {
+                      countNotifier.state = parsed;
+                      debugPrint(val);
+                    } else {
+                      debugPrint("NOT OK");
+                      _textController.text = "0";
+                      countNotifier.state = 0;
+                    }
                 },
               ),
             ),

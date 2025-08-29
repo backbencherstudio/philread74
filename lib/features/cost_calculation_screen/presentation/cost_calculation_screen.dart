@@ -11,22 +11,22 @@ import 'package:philread74/features/carries_calculation_screen/widget/custom_con
 import 'package:philread74/features/portion_selection_screen/Riverpod/portionProvider.dart';
 import 'package:philread74/features/portion_selection_screen/presentation/widgets/custom_calc_tile.dart';
 
+import '../../carries_calculation_screen/Riverpod/carriesCalculation_provider.dart';
 import '../Riverpod/provider.dart';
 
-class CostCalculationScreen extends StatefulWidget {
+class CostCalculationScreen extends ConsumerStatefulWidget {
   const CostCalculationScreen({super.key});
 
   @override
-  State<CostCalculationScreen> createState() => _CostCalculationScreenState();
+  ConsumerState<CostCalculationScreen> createState() => _CostCalculationScreenState();
 }
 
-class _CostCalculationScreenState extends State<CostCalculationScreen> {
+class _CostCalculationScreenState extends ConsumerState<CostCalculationScreen> {
   final discountController = TextEditingController();
 
   @override
   void dispose() {
     discountController.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
  @override
@@ -49,11 +49,10 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
               final data = ref.watch(valueProvider);
               final portionData =
                   portionMap[data] ?? {"title": "-", "icon": AppIcons.fullIcon, "percentage": 10};
-              final bigCageFinalCost = (ref.read(bigCageCost.notifier).state * ref.read(countController(1).notifier).state).toStringAsFixed(2);
-              final smallCageFinalCost = (ref.read(smallCageCost.notifier).state * ref.read(countController(2).notifier).state).toStringAsFixed(2);
-              final dollyFinalCost = (ref.read(dollyCost.notifier).state * ref.read(countController(3).notifier).state).toStringAsFixed(2);
-              final palletFinalCost = (ref.read(palletCost.notifier).state * ref.read(countController(4).notifier).state).toStringAsFixed(2);
-              final totesFinalCost = (ref.read(totesCost.notifier).state * ref.read(countController(5).notifier).state).toStringAsFixed(2);
+              final bigCageFinalCost = ref.watch(itemPerCost(1)).toStringAsFixed(2);
+              final smallCageFinalCost = ref.watch(itemPerCost(2)).toStringAsFixed(2);
+              final dollyFinalCost = ref.watch(itemPerCost(3)).toStringAsFixed(2);
+              final palletFinalCost = ref.watch(itemPerCost(4)).toStringAsFixed(2);
         
               final netCost = ref.watch(totalCost);
               final disCost = ref.watch(discountProvider);
@@ -63,6 +62,11 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
+                      ref.read(itemPerCost(1).notifier).state = 0.0;
+                      ref.read(itemPerCost(2).notifier).state = 0.0;
+                      ref.read(itemPerCost(3).notifier).state = 0.0;
+                      ref.read(itemPerCost(4).notifier).state = 0.0;
+                      ref.read(totalCost.notifier).state = 0.0;
                       Navigator.pop(context);
                     },
                     child: Align(
@@ -133,6 +137,14 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                   ),
                   SizedBox(height: 16.h,),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("  (Totes)", style: style.bodyMedium?.copyWith(color: AppColors.containerTextColor, fontSize: 12.sp, fontWeight: FontWeight.w400),),
+                      CustomContainer(size: 3, text: "£${(ref.read(itemPerCost(3).notifier).state / 5).toStringAsFixed(2)}", isCentered: true,)
+                    ],
+                  ),
+                  SizedBox(height: 16.h,),
+                  Row(
                     children: [
                       CustomContainer(size: 2, text: "Pallets",),
                       SizedBox(width: 16.w,),
@@ -140,15 +152,20 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                     ],
                   ),
                   SizedBox(height: 16.h,),
-                  Row(
-                    children: [
-                      CustomContainer(size: 2, text: "Totes",),
-                      SizedBox(width: 16.w,),
-                      CustomContainer(size: 3, text: "£$totesFinalCost", isCentered: true,)
-                    ],
-                  ),
+                  CustomContainer(size: 1, text: "A ${portionData["percentage"]}% extra charge applies for the ${portionData["title"]} portion compared to the full price."),
                   SizedBox(height: 16.h,),
-                  CustomContainer(size: 1, text: "A ${portionData["percentage"]}% extra charge applies for the ${portionData["title"]} portion compared to the full price.", price: netCost.toStringAsFixed(2), both: true,),
+                  //CustomContainer(size: 1, price: netCost.toStringAsFixed(2)),
+                  Container(
+                    width: double.maxFinite,
+                    height: 36.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6.r),
+                      border: Border.all(width: 1.w, color: AppColors.onPrimary),
+                      color: AppColors.onSurface,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text("£ ${(netCost).toStringAsFixed(2)}", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
+                  ),
                   SizedBox(height: 16.h,),
                   TextFormField(
                     controller: discountController,
@@ -175,26 +192,9 @@ class _CostCalculationScreenState extends State<CostCalculationScreen> {
                     ),
                     onChanged: (val) {
                       double parsed = double.tryParse(val) ?? 0.0;
-                      if(parsed > netCost) {
-                        discountController.text = "";
-                      } else {
-                        ///discountController.text = parsed.toString();
-                        ref.read(discountProvider.notifier).state = parsed;
-                      }
+                      ref.read(discountProvider.notifier).state = parsed;
                     },
                   ),
-                  SizedBox(height: 3.h,),
-                  Container(
-                    width: double.maxFinite,
-                    height: 36.h,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6.r),
-                      border: Border.all(width: 1.w, color: AppColors.onPrimary),
-                      color: AppColors.onSurface,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text("£ ${(netCost-disCost).toStringAsFixed(2)}", style: style.bodyMedium!.copyWith(color: AppColors.containerTextColor, fontWeight: FontWeight.w400, fontSize: 12.sp),),
-                  )
                 ],
               );
             },

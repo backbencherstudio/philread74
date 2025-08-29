@@ -33,18 +33,23 @@ class PortionSelectionScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: SvgPicture.asset(
-                  AppIcons.backButton,
-                  height: 28.h,
-                  width: 28.w,
-                ),
-              ),
+            Consumer(
+              builder: (_, ref, _) {
+                return GestureDetector(
+                  onTap: () {
+                    ref.invalidate(selectedIndexProvider);
+                    Navigator.pop(context);
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SvgPicture.asset(
+                      AppIcons.backButton,
+                      height: 28.h,
+                      width: 28.w,
+                    ),
+                  ),
+                );
+              }
             ),
             SizedBox(height: 36.h),
             Align(
