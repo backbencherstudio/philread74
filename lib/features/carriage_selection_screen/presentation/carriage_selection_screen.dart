@@ -47,26 +47,23 @@ class CarriageSelectionScreen extends StatelessWidget {
             Consumer(
               builder: (context, ref, _) {
                 final isSelected = ref.watch(selectedIndexProvider);
-                return SizedBox(
-                  height: 260.h,
-                  child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 16,
-                      childAspectRatio: 1.3,
-                    ),
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return Customtiles(title: carriage[index],
-                      onTap: () {
-                        ref.watch(selectedIndexProvider.notifier).state =index;
-                      }, isSelected: isSelected == index,
-                      );
-                    },
+                return GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 1.3,
                   ),
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Customtiles(title: carriage[index],
+                    onTap: () {
+                      ref.watch(selectedIndexProvider.notifier).state =index;
+                    }, isSelected: isSelected == index,
+                    );
+                  },
                 );
               }
             ),
