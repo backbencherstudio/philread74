@@ -1,7 +1,7 @@
 part of 'part_of_import.dart';
 
-class RouteConfig {
-  GoRouter goRouter = GoRouter(
+  class RouteConfig {
+static final  GoRouter goRouter = GoRouter(
     initialLocation: RouteName.loginScreen,
     navigatorKey: NavigationService.instance.navigatorKey,
 
